@@ -15,7 +15,7 @@ void main() async => {
         authCallbackUrlHostname: dotenv.env["SUPABASE_CALLBACK_URL"],
       ),
       runApp(
-        ProviderScope(
+        const ProviderScope(
           child: CampusConnect(),
         ),
       )

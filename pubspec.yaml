@@ -9,21 +9,24 @@ environment:
 
 dependencies:
   cupertino_icons: ^1.0.2
+  firebase_core: ^1.13.1
+  fluentui_system_icons: ^1.1.161
   flutter:
     sdk: flutter
-
-dev_dependencies:
-  firebase_core: ^1.13.1
   flutter_dotenv: ^5.0.2
-  flutter_lints: ^1.0.0
   flutter_riverpod: ^1.0.3
-  flutter_test:
-    sdk: flutter
+  shared_preferences: ^2.0.13
   supabase: ^0.2.14
   supabase_flutter: ^0.2.12
 
+dev_dependencies:
+  flutter_lints: ^1.0.0
+  flutter_test:
+    sdk: flutter
+
 flutter:
   uses-material-design: true
-  
+
   assets:
     - .env
+    - assets/
