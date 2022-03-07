@@ -54,18 +54,18 @@ ThemeData darkTheme = ThemeData(
 
 class ThemeNotifer extends ChangeNotifier {
   final String key = "theme";
-  late SharedPreferences _prefs;
-  late bool _dakTheme;
+  SharedPreferences? _prefs;
+  bool? _dakTheme;
 
   ThemeNotifer() {
     _dakTheme = true;
     _loadFromPreference();
   }
 
-  bool get darkTheme => _dakTheme;
+  bool get darkTheme => _dakTheme!;
 
   toggleTheme() {
-    _dakTheme = !_dakTheme;
+    _dakTheme = !_dakTheme!;
     _saveToPreference();
     notifyListeners();
   }
@@ -77,13 +77,13 @@ class ThemeNotifer extends ChangeNotifier {
 
   _loadFromPreference() async {
     await _initiatePreference();
-    _dakTheme = _prefs.getBool(key) ?? true;
+    _dakTheme = _prefs!.getBool(key) ?? true;
     notifyListeners();
   }
 
   _saveToPreference() async {
     await _initiatePreference();
-    _prefs.setBool(key, _dakTheme);
+    _prefs!.setBool(key, _dakTheme!);
   }
 }
 

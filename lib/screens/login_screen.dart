@@ -18,27 +18,37 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   late final TextEditingController _emailController;
 
-  Future<void> _signIn() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final response = await supabase.auth.signIn(
-        email: _emailController.text,
-        options: AuthOptions(
-            redirectTo: kIsWeb
-                ? null
-                : 'io.supabase.utilitysupabase://login-callback/'));
-    final error = response.error;
-    if (error != null) {
-      context.showErrorSnackBar(message: error.message);
-    } else {
-      context.showSnackBar(message: 'Check your email for login link!');
-      _emailController.clear();
-    }
+  bool _isEmailValid(String? email) {
+    final emailRegex = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@psgtech.ac.in$');
+    return emailRegex.hasMatch(email!);
+  }
 
-    setState(() {
-      _isLoading = false;
-    });
+  Future<void> _signIn() async {
+    if (_isEmailValid(_emailController.text)) {
+      setState(() {
+        _isLoading = true;
+      });
+      final response = await supabase.auth.signIn(
+          email: _emailController.text,
+          options: AuthOptions(
+              redirectTo: kIsWeb
+                  ? null
+                  : 'io.supabase.campusconnect://login-callback/'));
+      final error = response.error;
+      if (error != null) {
+        context.showErrorSnackBar(message: error.message);
+      } else {
+        context.showSnackBar(message: 'Check your email for login link!');
+        _emailController.clear();
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } else {
+      context.showSnackBar(message: 'Email should ends with @psgtech.ac.in!');
+    }
   }
 
   @override
@@ -113,7 +123,25 @@ class _LoginScreenState extends State<LoginScreen> {
                   buttonText: "Send Login Link",
                   width: MediaQuery.of(context).size.width * 0.80,
                   onpressed: _signIn,
-                )
+                ),
+                const SizedBox(height: 30),
+                _emailController.text.isNotEmpty
+                    ? Container()
+                    : Text(
+                        'Please enter your email to get login link',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
+                        ),
+                      ),
+                const SizedBox(height: 20),
+                _isLoading
+                    ? LinearProgressIndicator(
+                        color: theme.darkTheme
+                            ? Theme.of(context).primaryColor
+                            : Colors.black,
+                      )
+                    : Container(),
               ],
             ),
           );

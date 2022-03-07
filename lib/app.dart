@@ -1,3 +1,5 @@
+import 'package:campus_connect/screens/add_details.dart';
+import 'package:campus_connect/screens/home_screen.dart';
 import 'package:campus_connect/screens/login_screen.dart';
 import 'package:campus_connect/screens/splash_screen.dart';
 import 'package:campus_connect/utils/theme.dart';
@@ -20,6 +22,8 @@ class CampusConnect extends StatelessWidget {
           routes: {
             '/': (context) => const SplashScreen(),
             '/login': (context) => const LoginScreen(),
+            '/home': (context) => const HomeScreen(),
+            '/add_details': (context) => const AddDetailsScreen()
           },
         );
       },

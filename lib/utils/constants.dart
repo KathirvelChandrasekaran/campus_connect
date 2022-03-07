@@ -9,7 +9,20 @@ extension ShowSnackBar on BuildContext {
   }) {
     ScaffoldMessenger.of(this).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: const TextStyle(color: Colors.black),
+          textAlign: TextAlign.center,
+        ),
+        shape: ShapeBorder.lerp(
+          const RoundedRectangleBorder(),
+          const RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+          ),
+          0.5,
+        ),
         backgroundColor: const Color(0XFFE3F6FD),
         behavior: SnackBarBehavior.floating,
         elevation: 1.0,
