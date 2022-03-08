@@ -15,7 +15,7 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
   @override
   void initState() {
     super.initState();
-    var res = _user.isUserProfileFound(supabase.auth.user()!.id);
+    var res = _user.isUserProfileFound(supabase.auth.currentUser!.id);
     res.then((user) {
       if (user == 0) {
         Navigator.pushNamed(context, '/add_details');
