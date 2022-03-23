@@ -179,6 +179,8 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
                         insertData();
                       }
                     },
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                    textColor: Colors.white,
                   ),
                 ),
               ],
