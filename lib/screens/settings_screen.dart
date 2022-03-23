@@ -20,7 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (error != null) {
       context.showErrorSnackBar(message: error.message);
     }
-    Navigator.of(context).pushReplacementNamed('/login');
+    Navigator.of(context).pushNamedAndRemoveUntil('/login', (route) => false);
   }
 
   @override

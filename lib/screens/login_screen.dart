@@ -21,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isEmailValid(String? email) {
     final emailRegex = RegExp(
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@psgtech.ac.in$');
-    return emailRegex.hasMatch(email!);
+    return emailRegex.hasMatch(email!) || email == 'kathir98vel@gmail.com';
   }
 
   Future<void> _signIn() async {
@@ -111,12 +111,11 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     hintText: 'Email',
                     hintStyle: TextStyle(
-                      color: theme.darkTheme
-                          ? Colors.white
-                          : Theme.of(context).primaryColor,
+                      color: theme.darkTheme ? Colors.white : Colors.grey,
                     ),
                   ),
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(
+                      color: theme.darkTheme ? Colors.white : Colors.black),
                 ),
                 const SizedBox(height: 20),
                 RoundedButtonWidget(

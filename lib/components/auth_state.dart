@@ -13,13 +13,18 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   @override
   void onAuthenticated(Session session) async {
     if (mounted) {
-      await supabase
+      final res = await supabase
           .from('profiles')
           .select()
           .eq('id', session.user?.id)
           .single()
           .execute();
+      // if (res.status == 406) {
+      //   Navigator.of(context)
+      //       .pushNamedAndRemoveUntil('/addDetails', (route) => false);
+      // } else {
       Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+      // }
     }
   }
 

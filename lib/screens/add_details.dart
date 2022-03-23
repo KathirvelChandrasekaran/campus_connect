@@ -24,7 +24,7 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
       'user_role': _selectedRole,
       'mobile_number': int.parse(_mobileController.text),
       "avatar_url": "",
-      "updated_at": DateTime.now().toIso8601String()
+      "updated_at": DateTime.now().toIso8601String(),
     }).execute();
     Navigator.pushNamed(context, '/home');
   }
@@ -84,7 +84,7 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
                       ),
                       hintText: 'Username',
                       hintStyle: TextStyle(
-                        color: theme.darkTheme ? Colors.white : Colors.black,
+                        color: theme.darkTheme ? Colors.white : Colors.grey,
                       ),
                     ),
                     style: TextStyle(
@@ -127,7 +127,7 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
                       ),
                       hintText: 'Mobile Number',
                       hintStyle: TextStyle(
-                        color: theme.darkTheme ? Colors.white : Colors.black,
+                        color: theme.darkTheme ? Colors.white : Colors.grey,
                       ),
                     ),
                     style: TextStyle(
