@@ -11,4 +11,14 @@ class UserProfileService {
         .execute(count: CountOption.exact);
     return res.count;
   }
+
+  getUserProfile(String id) async {
+    final res = await supabase
+        .from('profiles')
+        .select()
+        .eq('id', id)
+        .limit(1)
+        .execute();
+    return res.data;
+  }
 }
