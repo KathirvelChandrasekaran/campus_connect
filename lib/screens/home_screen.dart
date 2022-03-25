@@ -37,7 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               IconButton(
                 icon: Icon(
-                  FluentIcons.badge_24_regular,
+                  FluentIcons.alert_24_filled,
                   color: theme.darkTheme
                       ? Theme.of(context).primaryColor
                       : Colors.black,
