@@ -21,4 +21,14 @@ class UserProfileService {
         .execute();
     return res.data;
   }
+
+  getUserProfileByEmail(String id) async {
+    final res = await supabase
+        .from('students')
+        .select()
+        .eq('email_id', id)
+        .limit(1)
+        .execute();
+    return res.data;
+  }
 }

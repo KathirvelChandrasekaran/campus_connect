@@ -25,6 +25,7 @@ class _AddDetailsScreenState extends State<AddDetailsScreen> {
       'mobile_number': int.parse(_mobileController.text),
       "avatar_url": "",
       "updated_at": DateTime.now().toIso8601String(),
+      "email_id": supabase.auth.currentUser!.email,
     }).execute();
     Navigator.pushNamed(context, '/home');
   }
