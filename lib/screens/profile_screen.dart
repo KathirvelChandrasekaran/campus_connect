@@ -1,5 +1,7 @@
+import 'package:campus_connect/screens/view_pending_requests.dart';
 import 'package:campus_connect/services/user_profile_service.dart';
 import 'package:campus_connect/utils/constants.dart';
+import 'package:campus_connect/widgets/rounded_button_widget.dart';
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -119,7 +121,26 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                   ),
-                )
+                ),
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: RoundedButtonWidget(
+              buttonText: "Pending requests",
+              width: MediaQuery.of(context).size.width * 0.90,
+              onpressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) {
+                      return const ViewPendingRequests();
+                    },
+                  ),
+                );
+              },
+              backgroundColor: Theme.of(context).colorScheme.secondary,
+              textColor: Colors.black,
+            ),
+          ),
         ],
       ),
     );

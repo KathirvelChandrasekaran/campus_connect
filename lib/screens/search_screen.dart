@@ -2,6 +2,7 @@ import 'package:campus_connect/screens/view_student.dart';
 import 'package:campus_connect/utils/constants.dart';
 import 'package:campus_connect/utils/theme.dart';
 import 'package:campus_connect/widgets/rounded_button_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -209,10 +210,34 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                   .size
                                                                   .width *
                                                               0.90,
-                                                          onpressed: () {
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
+                                                          onpressed: () async {
+                                                            await FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    "user_requests")
+                                                                .doc(student[
+                                                                    'email_id'])
+                                                                .set({
+                                                              "email_id": student[
+                                                                  'email_id'],
+                                                              "username": student[
+                                                                  'username'],
+                                                              "requested_by":
+                                                                  supabase
+                                                                      .auth
+                                                                      .currentUser
+                                                                      ?.email,
+                                                              "request_type":
+                                                                  "friend",
+                                                              "request_status":
+                                                                  "Pending",
+                                                              "request_date":
+                                                                  DateTime.now()
+                                                                      .toString()
+                                                            }).whenComplete(() =>
+                                                                    Navigator.of(
+                                                                            context)
+                                                                        .pop());
                                                           },
                                                           backgroundColor:
                                                               Colors.green,

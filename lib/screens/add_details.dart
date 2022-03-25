@@ -1,4 +1,3 @@
-import 'package:campus_connect/services/user_profile_service.dart';
 import 'package:campus_connect/utils/theme.dart';
 import 'package:campus_connect/widgets/rounded_button_widget.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';

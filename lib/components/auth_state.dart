@@ -13,7 +13,7 @@ class AuthState<T extends StatefulWidget> extends SupabaseAuthState<T> {
   @override
   void onAuthenticated(Session session) async {
     if (mounted) {
-      final res = await supabase
+      await supabase
           .from('profiles')
           .select()
           .eq('id', session.user?.id)
