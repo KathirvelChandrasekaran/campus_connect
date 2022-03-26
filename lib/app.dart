@@ -1,5 +1,6 @@
 import 'package:campus_connect/screens/add_details.dart';
 import 'package:campus_connect/screens/admin_screen.dart';
+import 'package:campus_connect/screens/create_post.dart';
 import 'package:campus_connect/screens/home_screen.dart';
 import 'package:campus_connect/screens/login_screen.dart';
 import 'package:campus_connect/screens/settings_screen.dart';
@@ -28,6 +29,7 @@ class CampusConnect extends StatelessWidget {
             '/add_details': (context) => const AddDetailsScreen(),
             '/settings': (context) => const SettingsScreen(),
             '/admin': (context) => const AdminScreen(),
+            '/createPost': (context) => const CreatePost(),
           },
         );
       },

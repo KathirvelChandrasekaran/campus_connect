@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "firebase-admin": "^10.0.2",
+    "messagebird": "^3.7.2"
+  }
+}

@@ -3,6 +3,7 @@ import 'package:campus_connect/utils/constants.dart';
 import 'package:campus_connect/utils/theme.dart';
 import 'package:campus_connect/widgets/rounded_button_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,6 +20,18 @@ class _SearchScreenState extends State<SearchScreen> {
   List<dynamic>? students;
   bool isLoading = false;
   bool isDataLoaded = false;
+  late FirebaseMessaging messaging;
+  dynamic token;
+
+  @override
+  // ignore: must_call_super
+  void initState() {
+    messaging = FirebaseMessaging.instance;
+    messaging.getToken().then((value) {
+      print(value);
+      token = value;
+    });
+  }
 
   getSearchResults() async {
     setState(() {
@@ -211,6 +224,26 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                   .width *
                                                               0.90,
                                                           onpressed: () async {
+                                                            String? token;
+                                                            final FirebaseMessaging
+                                                                _firebaseMessaging =
+                                                                FirebaseMessaging
+                                                                    .instance;
+
+                                                            _getToken() {
+                                                              _firebaseMessaging
+                                                                  .getToken()
+                                                                  .then(
+                                                                    (deviceToken) =>
+                                                                        {
+                                                                      token =
+                                                                          deviceToken
+                                                                    },
+                                                                  );
+                                                            }
+
+                                                            _getToken();
+
                                                             await FirebaseFirestore
                                                                 .instance
                                                                 .collection(
@@ -233,7 +266,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                   "Pending",
                                                               "request_date":
                                                                   DateTime.now()
-                                                                      .toString()
+                                                                      .toString(),
+                                                              "token": token,
                                                             }).whenComplete(() =>
                                                                     Navigator.of(
                                                                             context)
@@ -265,7 +299,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         height: MediaQuery.of(context).size.height * 0.5,
                         child: Center(
                           child: Text(
-                            'No data found',
+                            "No result found",
                             style: TextStyle(
                               color: theme.darkTheme
                                   ? Theme.of(context).primaryColor
