@@ -1,6 +1,7 @@
 import 'package:campus_connect/services/user_profile_service.dart';
 import 'package:campus_connect/utils/constants.dart';
 import 'package:campus_connect/utils/theme.dart';
+import 'package:campus_connect/widgets/rounded_button_widget.dart';
 import 'package:fluentui_system_icons/fluentui_system_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -61,74 +62,133 @@ class _NewsFeedScreenState extends State<NewsFeedScreen> {
                 ? const LinearProgressIndicator()
                 : Padding(
                     padding: const EdgeInsets.all(16.0),
-                    child: ListView(
-                      children: posts!
-                          .map(
-                            (student) => Column(
-                              children: [
-                                Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(15),
-                                    color: Theme.of(context).primaryColor,
-                                  ),
-                                  child: ListTile(
-                                    subtitle: Padding(
-                                      padding: const EdgeInsets.all(16.0),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            student['email_id'],
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 22,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.02),
-                                          Text(
-                                            student['title'],
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height *
-                                                  0.02),
-                                          Text(
-                                            student['content'],
-                                            style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    // trailing: Text(
-                                    //   student['content'],
-                                    //   style: const TextStyle(
-                                    //     color: Colors.black,
-                                    //     fontWeight: FontWeight.bold,
-                                    //   ),
-                                    // ),
-                                    onTap: () {},
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                              ],
+                    child: posts!.isEmpty
+                        ? const Center(
+                            child: Text(
+                              "No posts found",
+                              style: TextStyle(
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           )
-                          .toList(),
-                    ),
+                        : ListView(
+                            children: posts!
+                                .map(
+                                  (post) => Column(
+                                    children: [
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          color: Theme.of(context).primaryColor,
+                                        ),
+                                        child: ListTile(
+                                          subtitle: Padding(
+                                            padding: const EdgeInsets.all(16.0),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  post['email_id'],
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight: FontWeight.w600,
+                                                    fontSize: 22,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.02),
+                                                Text(
+                                                  post['title'],
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 20,
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.02),
+                                                Text(
+                                                  post['content'],
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                          // trailing: Text(
+                                          //   post['content'],
+                                          //   style: const TextStyle(
+                                          //     color: Colors.black,
+                                          //     fontWeight: FontWeight.bold,
+                                          //   ),
+                                          // ),
+                                          onTap: () {
+                                            if (supabase
+                                                    .auth.currentUser!.email ==
+                                                post['email_id']) {
+                                              showModalBottomSheet(
+                                                context: context,
+                                                enableDrag: true,
+                                                builder: (context) {
+                                                  return SizedBox(
+                                                    height:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .height *
+                                                            0.15,
+                                                    child: Center(
+                                                      child:
+                                                          RoundedButtonWidget(
+                                                        buttonText:
+                                                            "Delete Post",
+                                                        width: MediaQuery.of(
+                                                                    context)
+                                                                .size
+                                                                .width *
+                                                            0.90,
+                                                        onpressed: () {
+                                                          supabase
+                                                              .from('posts')
+                                                              .delete()
+                                                              .eq('id',
+                                                                  post['id'])
+                                                              .execute();
+                                                          getDetails();
+                                                          Navigator.pop(
+                                                              context);
+                                                        },
+                                                        backgroundColor:
+                                                            Theme.of(context)
+                                                                .colorScheme
+                                                                .error,
+                                                        textColor: Colors.white,
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                        ),
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
+                                  ),
+                                )
+                                .toList(),
+                          ),
                   ),
           ),
         );
