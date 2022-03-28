@@ -28,7 +28,6 @@ class _SearchScreenState extends State<SearchScreen> {
   void initState() {
     messaging = FirebaseMessaging.instance;
     messaging.getToken().then((value) {
-      print(value);
       token = value;
     });
   }
@@ -224,7 +223,6 @@ class _SearchScreenState extends State<SearchScreen> {
                                                                   .width *
                                                               0.90,
                                                           onpressed: () async {
-                                                            String? token;
                                                             final FirebaseMessaging
                                                                 _firebaseMessaging =
                                                                 FirebaseMessaging
@@ -234,44 +232,40 @@ class _SearchScreenState extends State<SearchScreen> {
                                                               _firebaseMessaging
                                                                   .getToken()
                                                                   .then(
-                                                                    (deviceToken) =>
+                                                                    (deviceToken) async =>
                                                                         {
-                                                                      token =
-                                                                          deviceToken
+                                                                      await FirebaseFirestore
+                                                                          .instance
+                                                                          .collection(
+                                                                              "user_requests")
+                                                                          .doc(student[
+                                                                              'email_id'])
+                                                                          .set({
+                                                                        "email_id":
+                                                                            student['email_id'],
+                                                                        "username":
+                                                                            student['username'],
+                                                                        "requested_by": supabase
+                                                                            .auth
+                                                                            .currentUser
+                                                                            ?.email,
+                                                                        "request_type":
+                                                                            "friend",
+                                                                        "request_status":
+                                                                            "Pending",
+                                                                        "request_date":
+                                                                            DateTime.now().toString(),
+                                                                        "token":
+                                                                            deviceToken,
+                                                                      }).whenComplete(
+                                                                        () => Navigator.of(context)
+                                                                            .pop(),
+                                                                      ),
                                                                     },
                                                                   );
                                                             }
 
                                                             _getToken();
-
-                                                            await FirebaseFirestore
-                                                                .instance
-                                                                .collection(
-                                                                    "user_requests")
-                                                                .doc(student[
-                                                                    'email_id'])
-                                                                .set({
-                                                              "email_id": student[
-                                                                  'email_id'],
-                                                              "username": student[
-                                                                  'username'],
-                                                              "requested_by":
-                                                                  supabase
-                                                                      .auth
-                                                                      .currentUser
-                                                                      ?.email,
-                                                              "request_type":
-                                                                  "friend",
-                                                              "request_status":
-                                                                  "Pending",
-                                                              "request_date":
-                                                                  DateTime.now()
-                                                                      .toString(),
-                                                              "token": token,
-                                                            }).whenComplete(() =>
-                                                                    Navigator.of(
-                                                                            context)
-                                                                        .pop());
                                                           },
                                                           backgroundColor:
                                                               Colors.green,
