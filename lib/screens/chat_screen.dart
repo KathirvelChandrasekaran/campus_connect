@@ -73,12 +73,6 @@ class _ChatScreenState extends State<ChatScreen> {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    trailing: Text(
-                      document.data()['request_status'],
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
                     onTap: () => Navigator.push(
                       context,
                       MaterialPageRoute(

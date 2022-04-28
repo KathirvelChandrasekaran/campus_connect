@@ -56,26 +56,42 @@ class _ChatState extends State<Chat> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               isDataLoaded
-                  ? ListView(
-                      shrinkWrap: true,
-                      children: chats!
-                          .map(
-                            (chat) => Column(
-                              children: [
-                                BubbleSpecialOne(
-                                  text: chat['message'],
-                                  color: const Color(0xFF1B97F3),
-                                  tail: chat['from'] ==
-                                          supabase.auth.currentUser?.email
-                                      ? true
-                                      : false,
-                                  textStyle: const TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          )
-                          .toList())
+                  ? StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('chat')
+                          .where('from',
+                              isEqualTo: supabase.auth.currentUser?.email)
+                          .snapshots(),
+                      builder: (BuildContext context, AsyncSnapshot snapshot) {
+                        return GestureDetector(
+                          onTap: () {
+                            getChat();
+                          },
+                          child: ListView(
+                              shrinkWrap: true,
+                              children: chats!
+                                  .map(
+                                    (chat) => Column(
+                                      children: [
+                                        BubbleSpecialOne(
+                                          text: chat['message'],
+                                          color: const Color(0xFF1B97F3),
+                                          isSender: chat['from'] ==
+                                                  supabase
+                                                      .auth.currentUser?.email
+                                              ? true
+                                              : false,
+                                          textStyle: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 16),
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                  .toList()),
+                        );
+                      },
+                    )
                   : const LinearProgressIndicator(),
               Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -96,7 +112,7 @@ class _ChatState extends State<Chat> {
                         FirebaseFirestore.instance
                             .collection("chat")
                             .doc(supabase.auth.currentUser?.email)
-                            .set({
+                            .update({
                           'chats': FieldValue.arrayUnion([
                             {
                               'from': supabase.auth.currentUser?.email,
